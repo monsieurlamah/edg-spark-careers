@@ -1,15 +1,15 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, Briefcase, ArrowRight, Sparkles, AlertTriangle } from "lucide-react";
+import { MapPin, Clock, Briefcase, ArrowRight, Sparkles, AlertTriangle, Calendar } from "lucide-react";
 
 const mockJobs = [
-  { id: 1, title: "Ingénieur Électricien Senior", location: "Conakry", type: "CDI", department: "Production", urgent: true, isNew: true, posted: "Il y a 2 jours" },
-  { id: 2, title: "Technicien de Maintenance", location: "Kankan", type: "CDI", department: "Maintenance", urgent: false, isNew: true, posted: "Il y a 3 jours" },
-  { id: 3, title: "Chef de Projet Énergie Renouvelable", location: "Conakry", type: "CDI", department: "R&D", urgent: true, isNew: false, posted: "Il y a 5 jours" },
-  { id: 4, title: "Analyste Financier", location: "Conakry", type: "CDD", department: "Finance", urgent: false, isNew: true, posted: "Il y a 1 jour" },
-  { id: 5, title: "Responsable RH", location: "Conakry", type: "CDI", department: "Ressources Humaines", urgent: false, isNew: false, posted: "Il y a 7 jours" },
-  { id: 6, title: "Opérateur de Réseau", location: "Labé", type: "CDI", department: "Distribution", urgent: false, isNew: true, posted: "Il y a 4 jours" },
+  { id: 1, title: "Ingénieur Électricien Senior", location: "Conakry", type: "CDI", department: "Production", urgent: true, isNew: true, posted: "Il y a 2 jours", deadline: "15 Mars 2026", description: "Pilotez la production d'énergie dans les centrales d'EDG. Poste stratégique avec évolution rapide." },
+  { id: 2, title: "Technicien de Maintenance", location: "Kankan", type: "CDI", department: "Maintenance", urgent: false, isNew: true, posted: "Il y a 3 jours", deadline: "20 Mars 2026", description: "Assurez la continuité du réseau électrique. Formation continue et équipements de pointe." },
+  { id: 3, title: "Chef de Projet Énergie Renouvelable", location: "Conakry", type: "CDI", department: "R&D", urgent: true, isNew: false, posted: "Il y a 5 jours", deadline: "10 Mars 2026", description: "Transformez l'avenir énergétique de la Guinée avec des projets solaires et hydrauliques innovants." },
+  { id: 4, title: "Analyste Financier", location: "Conakry", type: "CDD", department: "Finance", urgent: false, isNew: true, posted: "Il y a 1 jour", deadline: "25 Mars 2026", description: "Participez aux décisions financières stratégiques d'une entreprise nationale en pleine croissance." },
+  { id: 5, title: "Responsable RH", location: "Conakry", type: "CDI", department: "Ressources Humaines", urgent: false, isNew: false, posted: "Il y a 7 jours", deadline: "18 Mars 2026", description: "Façonnez la politique RH et attirez les meilleurs talents pour EDG." },
+  { id: 6, title: "Opérateur de Réseau", location: "Labé", type: "CDI", department: "Distribution", urgent: false, isNew: true, posted: "Il y a 4 jours", deadline: "22 Mars 2026", description: "Surveillez et optimisez le réseau de distribution pour des milliers de foyers guinéens." },
 ];
 
 export default function RecentJobsSection() {
@@ -45,52 +45,63 @@ export default function RecentJobsSection() {
               viewport={{ once: true }}
               transition={{ delay: i * 0.1 }}
             >
-              <div className="glass-card h-full flex flex-col group cursor-pointer">
-                {/* Badges */}
-                <div className="flex gap-2 mb-4">
-                  {job.isNew && (
-                    <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">
-                      Nouveau
+              <Link to={`/offres/${job.id}`} className="block h-full">
+                <div className="glass-card h-full flex flex-col group cursor-pointer">
+                  {/* Badges */}
+                  <div className="flex gap-2 mb-3">
+                    {job.isNew && (
+                      <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">
+                        Nouveau
+                      </span>
+                    )}
+                    {job.urgent && (
+                      <span className="px-3 py-1 rounded-full bg-destructive/10 text-destructive text-xs font-bold flex items-center gap-1">
+                        <AlertTriangle className="h-3 w-3" />
+                        Urgent
+                      </span>
+                    )}
+                  </div>
+
+                  {/* Title */}
+                  <h3 className="text-lg font-bold text-foreground mb-1.5 group-hover:text-primary transition-colors">
+                    {job.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground font-medium mb-2">{job.department}</p>
+
+                  {/* Description */}
+                  <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">
+                    {job.description}
+                  </p>
+
+                  {/* Info */}
+                  <div className="flex flex-wrap gap-3 mb-3 mt-auto">
+                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <MapPin className="h-3.5 w-3.5 shrink-0" />
+                      {job.location}
                     </span>
-                  )}
-                  {job.urgent && (
-                    <span className="px-3 py-1 rounded-full bg-edg-red/10 text-edg-red text-xs font-bold flex items-center gap-1">
-                      <AlertTriangle className="h-3 w-3" />
-                      Urgent
+                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Briefcase className="h-3.5 w-3.5 shrink-0" />
+                      {job.type}
                     </span>
-                  )}
-                </div>
+                    <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
+                      <Clock className="h-3.5 w-3.5 shrink-0" />
+                      {job.posted}
+                    </span>
+                  </div>
 
-                {/* Title */}
-                <h3 className="text-lg font-bold text-foreground mb-2 group-hover:text-primary transition-colors">
-                  {job.title}
-                </h3>
-                <p className="text-sm text-muted-foreground mb-4">{job.department}</p>
+                  {/* Deadline */}
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-destructive/80 mb-4">
+                    <Calendar className="h-3.5 w-3.5 shrink-0" />
+                    Date limite : {job.deadline}
+                  </div>
 
-                {/* Info */}
-                <div className="flex flex-wrap gap-3 mb-6 mt-auto">
-                  <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <MapPin className="h-3.5 w-3.5" />
-                    {job.location}
-                  </span>
-                  <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Briefcase className="h-3.5 w-3.5" />
-                    {job.type}
-                  </span>
-                  <span className="flex items-center gap-1.5 text-xs text-muted-foreground">
-                    <Clock className="h-3.5 w-3.5" />
-                    {job.posted}
-                  </span>
-                </div>
-
-                {/* CTA */}
-                <Link to={`/offres/${job.id}`}>
+                  {/* CTA */}
                   <Button variant="outline" size="sm" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all">
-                    Postuler
+                    Voir l'offre & Postuler
                     <ArrowRight className="h-4 w-4 ml-1" />
                   </Button>
-                </Link>
-              </div>
+                </div>
+              </Link>
             </motion.div>
           ))}
         </div>
