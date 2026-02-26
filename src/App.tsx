@@ -28,6 +28,7 @@ import ConfidentialitePage from "./pages/ConfidentialitePage";
 import ConditionsPage from "./pages/ConditionsPage";
 import FAQPage from "./pages/FAQPage";
 import ContactPage from "./pages/ContactPage";
+import DirectionDetailPage from "./pages/DirectionDetailPage";
 
 const queryClient = new QueryClient();
 
@@ -57,6 +58,8 @@ const App = () => (
           <Route path="/admin/spontanees" element={<AdminSpontaneesPage />} />
           <Route path="/admin/statistiques" element={<AdminStatistiquesPage />} />
           <Route path="/admin/parametres" element={<AdminParametresPage />} />
+          {/* Directions */}
+          <Route path="/directions/:slug" element={<DirectionDetailPage />} />
           {/* Institutional */}
           <Route path="/a-propos" element={<AProposPage />} />
           <Route path="/mentions-legales" element={<MentionsLegalesPage />} />
