@@ -1,7 +1,14 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
-import { MapPin, Clock, Briefcase, ArrowRight, Sparkles, AlertTriangle, Calendar } from "lucide-react";
+import { MapPin, Clock, Briefcase, ArrowRight, Sparkles, AlertTriangle, Calendar, Ban } from "lucide-react";
+
+function parseDeadline(d: string): Date {
+  const months: Record<string, number> = { "Jan": 0, "Fév": 1, "Mars": 2, "Avr": 3, "Mai": 4, "Juin": 5, "Juil": 6, "Août": 7, "Sep": 8, "Oct": 9, "Nov": 10, "Déc": 11 };
+  const parts = d.split(" ");
+  return new Date(parseInt(parts[2]), months[parts[1]] ?? 0, parseInt(parts[0]));
+}
+function isExpired(deadline: string): boolean { return parseDeadline(deadline) < new Date(); }
 
 const mockJobs = [
   { id: 1, title: "Ingénieur Électricien Senior", location: "Conakry", type: "CDI", department: "Production", urgent: true, isNew: true, posted: "Il y a 2 jours", deadline: "15 Mars 2026", description: "Pilotez la production d'énergie dans les centrales d'EDG. Poste stratégique avec évolution rapide." },
@@ -49,12 +56,18 @@ export default function RecentJobsSection() {
                 <div className="glass-card h-full flex flex-col group cursor-pointer">
                   {/* Badges */}
                   <div className="flex gap-2 mb-3">
-                    {job.isNew && (
+                    {isExpired(job.deadline) && (
+                      <span className="px-3 py-1 rounded-full bg-muted text-muted-foreground text-xs font-bold flex items-center gap-1">
+                        <Ban className="h-3 w-3" />
+                        Clôturée
+                      </span>
+                    )}
+                    {!isExpired(job.deadline) && job.isNew && (
                       <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">
                         Nouveau
                       </span>
                     )}
-                    {job.urgent && (
+                    {!isExpired(job.deadline) && job.urgent && (
                       <span className="px-3 py-1 rounded-full bg-destructive/10 text-destructive text-xs font-bold flex items-center gap-1">
                         <AlertTriangle className="h-3 w-3" />
                         Urgent
