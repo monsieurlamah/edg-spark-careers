@@ -4,7 +4,35 @@ import { MessageCircle, X, Send, Bot, User } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
-type Message = { role: "bot" | "user"; content: string };
+type Message = { role: "bot" | "user"; content: string; typed?: boolean };
+
+function TypewriterText({ text, onDone }: { text: string; onDone?: () => void }) {
+  const [displayed, setDisplayed] = useState("");
+  const idx = useRef(0);
+
+  useEffect(() => {
+    idx.current = 0;
+    setDisplayed("");
+    const interval = setInterval(() => {
+      idx.current++;
+      setDisplayed(text.slice(0, idx.current));
+      if (idx.current >= text.length) {
+        clearInterval(interval);
+        onDone?.();
+      }
+    }, 18);
+    return () => clearInterval(interval);
+  }, [text]);
+
+  return (
+    <>
+      {displayed.split(/\*\*(.*?)\*\*/g).map((part, j) =>
+        j % 2 === 1 ? <strong key={j}>{part}</strong> : part
+      )}
+      {displayed.length < text.length && <span className="inline-block w-0.5 h-4 bg-primary animate-pulse ml-0.5 align-middle" />}
+    </>
+  );
+}
 
 const faqResponses: Record<string, string> = {
   "bonjour": "Bonjour ! 👋 Bienvenue sur RECRUEDG. Comment puis-je vous aider aujourd'hui ?",
@@ -51,7 +79,7 @@ export default function ChatBot() {
     setInput("");
     setTyping(true);
     setTimeout(() => {
-      setMessages(prev => [...prev, { role: "bot", content: findResponse(userMsg) }]);
+      setMessages(prev => [...prev, { role: "bot", content: findResponse(userMsg), typed: false }]);
       setTyping(false);
     }, 800 + Math.random() * 600);
   };
@@ -106,8 +134,12 @@ export default function ChatBot() {
                       ? "bg-primary text-primary-foreground rounded-br-md"
                       : "bg-muted text-foreground rounded-bl-md"
                   }`}>
-                    {m.content.split(/\*\*(.*?)\*\*/g).map((part, j) =>
-                      j % 2 === 1 ? <strong key={j}>{part}</strong> : part
+                    {m.role === "bot" && !m.typed ? (
+                      <TypewriterText text={m.content} onDone={() => setMessages(prev => prev.map((msg, mi) => mi === i ? { ...msg, typed: true } : msg))} />
+                    ) : (
+                      m.content.split(/\*\*(.*?)\*\*/g).map((part, j) =>
+                        j % 2 === 1 ? <strong key={j}>{part}</strong> : part
+                      )
                     )}
                   </div>
                   {m.role === "user" && <div className="w-7 h-7 rounded-full bg-primary/10 flex items-center justify-center shrink-0 mt-1"><User className="h-4 w-4 text-primary" /></div>}
