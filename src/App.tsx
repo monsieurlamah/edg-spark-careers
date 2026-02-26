@@ -13,6 +13,11 @@ import CandidatureSpontaneePage from "./pages/CandidatureSpontaneePage";
 import CandidatDashboard from "./pages/CandidatDashboard";
 import AdminDashboard from "./pages/AdminDashboard";
 import AProposPage from "./pages/AProposPage";
+import MentionsLegalesPage from "./pages/MentionsLegalesPage";
+import ConfidentialitePage from "./pages/ConfidentialitePage";
+import ConditionsPage from "./pages/ConditionsPage";
+import FAQPage from "./pages/FAQPage";
+import ContactPage from "./pages/ContactPage";
 
 const queryClient = new QueryClient();
 
@@ -32,6 +37,11 @@ const App = () => (
           <Route path="/espace-candidat" element={<CandidatDashboard />} />
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/a-propos" element={<AProposPage />} />
+          <Route path="/mentions-legales" element={<MentionsLegalesPage />} />
+          <Route path="/confidentialite" element={<ConfidentialitePage />} />
+          <Route path="/conditions" element={<ConditionsPage />} />
+          <Route path="/faq" element={<FAQPage />} />
+          <Route path="/contact" element={<ContactPage />} />
           <Route path="*" element={<NotFound />} />
         </Routes>
       </BrowserRouter>
