@@ -19,6 +19,7 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const location = useLocation();
+  const isHome = location.pathname === "/";
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -65,7 +66,7 @@ export default function Navbar() {
                 className={`px-4 py-2 rounded-xl text-sm font-semibold transition-all duration-300 ${
                   location.pathname === link.href
                     ? "bg-primary/10 text-primary"
-                    : `${scrolled ? "text-foreground/80" : "text-white/90"} hover:text-foreground hover:bg-white/10`
+                    : `${!scrolled && isHome ? "text-white/90 hover:text-white hover:bg-white/10" : "text-foreground/80 hover:text-foreground hover:bg-muted/50"}`
                 }`}
               >
                 {link.label}
@@ -77,7 +78,7 @@ export default function Navbar() {
           <div className="hidden lg:flex items-center gap-2">
             <ThemeToggle />
             <Link to="/connexion">
-              <Button variant="ghost" size="sm" className={`gap-2 ${scrolled ? "text-foreground/80 hover:text-foreground" : "text-white/90 hover:text-white"}`}>
+              <Button variant="ghost" size="sm" className={`gap-2 ${!scrolled && isHome ? "text-white/90 hover:text-white" : "text-foreground/80 hover:text-foreground"}`}>
                 <LogIn className="h-4 w-4" />
                 Connexion
               </Button>
