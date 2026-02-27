@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Search, MapPin, Briefcase, Clock, Filter, ArrowRight, AlertTriangle, Calendar, Ban } from "lucide-react";
+import { Search, MapPin, Briefcase, Clock, Filter, ArrowRight, AlertTriangle, Calendar, Ban, LayoutGrid, List } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Link } from "react-router-dom";
@@ -30,6 +30,7 @@ function isExpired(deadline: string): boolean {
 
 export default function OffresPage() {
   const [search, setSearch] = useState("");
+  const [viewMode, setViewMode] = useState<"list" | "grid">("list");
 
   const filtered = allJobs.filter(
     (j) =>
@@ -60,53 +61,123 @@ export default function OffresPage() {
             </div>
           </motion.div>
 
-          <p className="text-sm text-muted-foreground mb-6">{filtered.length} offre(s) trouvée(s)</p>
-
-          <div className="space-y-4">
-            {filtered.map((job, i) => {
-              const expired = isExpired(job.deadline);
-              return (
-                <motion.div key={job.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
-                  <div className={`glass-card flex flex-col lg:flex-row lg:items-center gap-4 group ${expired ? 'opacity-70' : ''}`}>
-                    <div className="flex-1 min-w-0">
-                      <div className="flex flex-wrap items-center gap-2 mb-2">
-                        <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{job.title}</h3>
-                        {expired && (
-                          <span className="px-2.5 py-0.5 rounded-full bg-muted text-muted-foreground text-xs font-bold flex items-center gap-1">
-                            <Ban className="h-3 w-3" />Clôturée
-                          </span>
-                        )}
-                        {!expired && job.isNew && (
-                          <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold">Nouveau</span>
-                        )}
-                        {!expired && job.urgent && (
-                          <span className="px-2.5 py-0.5 rounded-full bg-destructive/10 text-destructive text-xs font-bold flex items-center gap-1">
-                            <AlertTriangle className="h-3 w-3" />Urgent
-                          </span>
-                        )}
-                      </div>
-                      <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{job.description}</p>
-                      <div className="flex flex-wrap gap-3 sm:gap-4 text-xs text-muted-foreground">
-                        <span className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 shrink-0" />{job.location}</span>
-                        <span className="flex items-center gap-1.5"><Briefcase className="h-3.5 w-3.5 shrink-0" />{job.type}</span>
-                        <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 shrink-0" />{job.posted}</span>
-                        <span className={`flex items-center gap-1.5 font-semibold ${expired ? 'text-destructive' : 'text-destructive/80'}`}>
-                          <Calendar className="h-3.5 w-3.5 shrink-0" />Limite : {job.deadline}
-                        </span>
-                        <span className="px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{job.department}</span>
-                      </div>
-                    </div>
-                    <Link to={`/offres/${job.id}`} className="shrink-0">
-                      <Button variant={expired ? "ghost" : "outline"} className="gap-2 w-full lg:w-auto" disabled={expired}>
-                        {expired ? "Offre clôturée" : "Voir l'offre"}
-                        {!expired && <ArrowRight className="h-4 w-4" />}
-                      </Button>
-                    </Link>
-                  </div>
-                </motion.div>
-              );
-            })}
+          <div className="flex items-center justify-between mb-6">
+            <p className="text-sm text-muted-foreground">{filtered.length} offre(s) trouvée(s)</p>
+            <div className="flex items-center gap-1 p-1 rounded-lg bg-muted/50">
+              <button
+                onClick={() => setViewMode("list")}
+                className={`p-2 rounded-md transition-all ${viewMode === "list" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+                title="Vue liste"
+              >
+                <List className="h-4 w-4" />
+              </button>
+              <button
+                onClick={() => setViewMode("grid")}
+                className={`p-2 rounded-md transition-all ${viewMode === "grid" ? "bg-primary text-primary-foreground shadow-sm" : "text-muted-foreground hover:text-foreground"}`}
+                title="Vue grille"
+              >
+                <LayoutGrid className="h-4 w-4" />
+              </button>
+            </div>
           </div>
+
+          {viewMode === "list" && (
+            <div className="space-y-4">
+              {filtered.map((job, i) => {
+                const expired = isExpired(job.deadline);
+                return (
+                  <motion.div key={job.id} initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+                    <div className={`glass-card flex flex-col lg:flex-row lg:items-center gap-4 group ${expired ? 'opacity-70' : ''}`}>
+                      <div className="flex-1 min-w-0">
+                        <div className="flex flex-wrap items-center gap-2 mb-2">
+                          <h3 className="text-lg font-bold text-foreground group-hover:text-primary transition-colors">{job.title}</h3>
+                          {expired && (
+                            <span className="px-2.5 py-0.5 rounded-full bg-muted text-muted-foreground text-xs font-bold flex items-center gap-1">
+                              <Ban className="h-3 w-3" />Clôturée
+                            </span>
+                          )}
+                          {!expired && job.isNew && (
+                            <span className="px-2.5 py-0.5 rounded-full bg-primary/10 text-primary text-xs font-bold">Nouveau</span>
+                          )}
+                          {!expired && job.urgent && (
+                            <span className="px-2.5 py-0.5 rounded-full bg-destructive/10 text-destructive text-xs font-bold flex items-center gap-1">
+                              <AlertTriangle className="h-3 w-3" />Urgent
+                            </span>
+                          )}
+                        </div>
+                        <p className="text-sm text-muted-foreground mb-3 line-clamp-2">{job.description}</p>
+                        <div className="flex flex-wrap gap-3 sm:gap-4 text-xs text-muted-foreground">
+                          <span className="flex items-center gap-1.5"><MapPin className="h-3.5 w-3.5 shrink-0" />{job.location}</span>
+                          <span className="flex items-center gap-1.5"><Briefcase className="h-3.5 w-3.5 shrink-0" />{job.type}</span>
+                          <span className="flex items-center gap-1.5"><Clock className="h-3.5 w-3.5 shrink-0" />{job.posted}</span>
+                          <span className={`flex items-center gap-1.5 font-semibold ${expired ? 'text-destructive' : 'text-destructive/80'}`}>
+                            <Calendar className="h-3.5 w-3.5 shrink-0" />Limite : {job.deadline}
+                          </span>
+                          <span className="px-2 py-0.5 rounded-full bg-muted text-muted-foreground">{job.department}</span>
+                        </div>
+                      </div>
+                      <Link to={`/offres/${job.id}`} className="shrink-0">
+                        <Button variant={expired ? "ghost" : "outline"} className="gap-2 w-full lg:w-auto" disabled={expired}>
+                          {expired ? "Offre clôturée" : "Voir l'offre"}
+                          {!expired && <ArrowRight className="h-4 w-4" />}
+                        </Button>
+                      </Link>
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
+
+          {viewMode === "grid" && (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {filtered.map((job, i) => {
+                const expired = isExpired(job.deadline);
+                return (
+                  <motion.div key={job.id} initial={{ opacity: 0, y: 30 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: i * 0.05 }}>
+                    <Link to={`/offres/${job.id}`} className={`block h-full ${expired ? 'pointer-events-none' : ''}`}>
+                      <div className={`glass-card h-full flex flex-col group cursor-pointer ${expired ? 'opacity-70' : ''}`}>
+                        <div className="flex gap-2 mb-3">
+                          {expired && (
+                            <span className="px-3 py-1 rounded-full bg-muted text-muted-foreground text-xs font-bold flex items-center gap-1">
+                              <Ban className="h-3 w-3" />Clôturée
+                            </span>
+                          )}
+                          {!expired && job.isNew && (
+                            <span className="px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">Nouveau</span>
+                          )}
+                          {!expired && job.urgent && (
+                            <span className="px-3 py-1 rounded-full bg-destructive/10 text-destructive text-xs font-bold flex items-center gap-1">
+                              <AlertTriangle className="h-3 w-3" />Urgent
+                            </span>
+                          )}
+                        </div>
+
+                        <h3 className="text-lg font-bold text-foreground mb-1.5 group-hover:text-primary transition-colors">{job.title}</h3>
+                        <p className="text-xs text-muted-foreground font-medium mb-2">{job.department}</p>
+                        <p className="text-sm text-muted-foreground leading-relaxed mb-4 line-clamp-2">{job.description}</p>
+
+                        <div className="flex flex-wrap gap-3 mb-3 mt-auto">
+                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><MapPin className="h-3.5 w-3.5 shrink-0" />{job.location}</span>
+                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><Briefcase className="h-3.5 w-3.5 shrink-0" />{job.type}</span>
+                          <span className="flex items-center gap-1.5 text-xs text-muted-foreground"><Clock className="h-3.5 w-3.5 shrink-0" />{job.posted}</span>
+                        </div>
+
+                        <div className={`flex items-center gap-1.5 text-xs font-semibold mb-4 ${expired ? 'text-destructive' : 'text-destructive/80'}`}>
+                          <Calendar className="h-3.5 w-3.5 shrink-0" />Date limite : {job.deadline}
+                        </div>
+
+                        <Button variant="outline" size="sm" className="w-full group-hover:bg-primary group-hover:text-primary-foreground transition-all" disabled={expired}>
+                          {expired ? "Offre clôturée" : "Voir l'offre & Postuler"}
+                          {!expired && <ArrowRight className="h-4 w-4 ml-1" />}
+                        </Button>
+                      </div>
+                    </Link>
+                  </motion.div>
+                );
+              })}
+            </div>
+          )}
         </div>
       </div>
       <Footer />
