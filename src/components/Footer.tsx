@@ -4,7 +4,7 @@ import logoEdg from "@/assets/logo-edg.png";
 
 export default function Footer() {
   return (
-    <footer className="bg-edg-dark text-white">
+    <footer className="bg-edg-dark text-white pb-20 lg:pb-0">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-12">
           {/* Brand */}

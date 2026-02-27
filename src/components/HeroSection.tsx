@@ -86,7 +86,7 @@ export default function HeroSection() {
                 </div>
                 <div>
                   <p className="text-2xl font-extrabold text-primary-foreground">{stat.value}</p>
-                  <p className="text-xs text-primary-foreground/45 font-medium">{stat.label}</p>
+                  <p className="text-xs text-primary-foreground/70 font-medium">{stat.label}</p>
                 </div>
               </motion.div>
             ))}
