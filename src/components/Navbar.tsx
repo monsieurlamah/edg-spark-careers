@@ -10,6 +10,7 @@ const navLinks = [
   { label: "Accueil", href: "/" },
   { label: "Offres", href: "/offres" },
   { label: "Candidature spontanée", href: "/candidature-spontanee" },
+  { label: "Fournisseurs", href: "/inscription-fournisseur" },
   { label: "À propos", href: "/a-propos" },
   { label: "Contact", href: "/contact" },
 ];

@@ -1,23 +1,19 @@
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
-import { LayoutDashboard, Briefcase, Users, FileText, BarChart3, Settings, LogOut, Building2, ShoppingCart, FileSignature } from "lucide-react";
+import { Building2, FileText, ShoppingCart, FolderOpen, Settings, LogOut, LayoutDashboard } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
-import logoEdg from "@/assets/logo-edg.png";
 
 const sidebarItems = [
-  { icon: LayoutDashboard, label: "Tableau de bord", href: "/admin" },
-  { icon: Briefcase, label: "Offres d'emploi", href: "/admin/offres" },
-  { icon: Users, label: "Candidatures", href: "/admin/candidatures" },
-  { icon: FileText, label: "Candidatures spontanées", href: "/admin/spontanees" },
-  { icon: Building2, label: "Fournisseurs", href: "/admin/fournisseurs" },
-  { icon: ShoppingCart, label: "Appels d'offres", href: "/admin/appels-offres" },
-  { icon: FileSignature, label: "Contrats", href: "/admin/contrats" },
-  { icon: BarChart3, label: "Statistiques", href: "/admin/statistiques" },
-  { icon: Settings, label: "Paramètres", href: "/admin/parametres" },
+  { icon: LayoutDashboard, label: "Tableau de bord", href: "/espace-fournisseur" },
+  { icon: Building2, label: "Mon profil", href: "/espace-fournisseur/profil" },
+  { icon: ShoppingCart, label: "Appels d'offres", href: "/espace-fournisseur/appels-offres" },
+  { icon: FileText, label: "Mes contrats", href: "/espace-fournisseur/contrats" },
+  { icon: FolderOpen, label: "Documents", href: "/espace-fournisseur/documents" },
+  { icon: Settings, label: "Paramètres", href: "/espace-fournisseur/parametres" },
 ];
 
-export default function AdminLayout({ children, activeItem }: { children: React.ReactNode; activeItem: string }) {
+export default function FournisseurLayout({ children, activeItem }: { children: React.ReactNode; activeItem: string }) {
   return (
     <div className="min-h-screen bg-muted/30">
       <Navbar />
@@ -26,9 +22,12 @@ export default function AdminLayout({ children, activeItem }: { children: React.
           <div className="grid lg:grid-cols-[280px_1fr] gap-8">
             <motion.aside initial={{ opacity: 0, x: -20 }} animate={{ opacity: 1, x: 0 }} className="space-y-2">
               <div className="glass-card text-center mb-6">
-                <img src={logoEdg} alt="EDG" className="h-12 w-auto mx-auto mb-3" />
-                <h3 className="font-bold text-foreground text-sm">Administration EDG</h3>
-                <p className="text-xs text-muted-foreground">Espace recruteur</p>
+                <div className="w-20 h-20 rounded-full bg-primary/10 flex items-center justify-center mx-auto mb-4">
+                  <Building2 className="h-8 w-8 text-primary" />
+                </div>
+                <h3 className="font-bold text-foreground">Entreprise ABC</h3>
+                <p className="text-sm text-muted-foreground">fournisseur@email.com</p>
+                <span className="inline-block mt-2 px-3 py-1 rounded-full bg-primary/10 text-primary text-xs font-bold">Fournisseur agréé</span>
               </div>
 
               {sidebarItems.map((item) => (
@@ -42,7 +41,7 @@ export default function AdminLayout({ children, activeItem }: { children: React.
                 </Link>
               ))}
 
-              <Link to="/connexion" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-destructive hover:bg-destructive/5 transition-all mt-4">
+              <Link to="/connexion" className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-destructive hover:bg-destructive/5 transition-all">
                 <LogOut className="h-4 w-4" />
                 Déconnexion
               </Link>

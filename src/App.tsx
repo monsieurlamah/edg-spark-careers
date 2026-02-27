@@ -22,6 +22,16 @@ import AdminCandidaturesPage from "./pages/admin/AdminCandidaturesPage";
 import AdminSpontaneesPage from "./pages/admin/AdminSpontaneesPage";
 import AdminStatistiquesPage from "./pages/admin/AdminStatistiquesPage";
 import AdminParametresPage from "./pages/admin/AdminParametresPage";
+import AdminFournisseursPage from "./pages/admin/AdminFournisseursPage";
+import AdminAppelsOffresPage from "./pages/admin/AdminAppelsOffresPage";
+import AdminContratsPage from "./pages/admin/AdminContratsPage";
+import InscriptionFournisseurPage from "./pages/InscriptionFournisseurPage";
+import FournisseurDashboard from "./pages/FournisseurDashboard";
+import ProfilFournisseurPage from "./pages/fournisseur/ProfilFournisseurPage";
+import AppelsOffresPage from "./pages/fournisseur/AppelsOffresPage";
+import ContratsFournisseurPage from "./pages/fournisseur/ContratsFournisseurPage";
+import DocumentsFournisseurPage from "./pages/fournisseur/DocumentsFournisseurPage";
+import ParametresFournisseurPage from "./pages/fournisseur/ParametresFournisseurPage";
 import AProposPage from "./pages/AProposPage";
 import MentionsLegalesPage from "./pages/MentionsLegalesPage";
 import ConfidentialitePage from "./pages/ConfidentialitePage";
@@ -53,11 +63,22 @@ const App = () => (
           <Route path="/espace-candidat/cv" element={<CVPage />} />
           <Route path="/espace-candidat/notifications" element={<NotificationsPage />} />
           <Route path="/espace-candidat/parametres" element={<ParametresPage />} />
+          {/* Fournisseur */}
+          <Route path="/inscription-fournisseur" element={<InscriptionFournisseurPage />} />
+          <Route path="/espace-fournisseur" element={<FournisseurDashboard />} />
+          <Route path="/espace-fournisseur/profil" element={<ProfilFournisseurPage />} />
+          <Route path="/espace-fournisseur/appels-offres" element={<AppelsOffresPage />} />
+          <Route path="/espace-fournisseur/contrats" element={<ContratsFournisseurPage />} />
+          <Route path="/espace-fournisseur/documents" element={<DocumentsFournisseurPage />} />
+          <Route path="/espace-fournisseur/parametres" element={<ParametresFournisseurPage />} />
           {/* Admin */}
           <Route path="/admin" element={<AdminDashboard />} />
           <Route path="/admin/offres" element={<AdminOffresPage />} />
           <Route path="/admin/candidatures" element={<AdminCandidaturesPage />} />
           <Route path="/admin/spontanees" element={<AdminSpontaneesPage />} />
+          <Route path="/admin/fournisseurs" element={<AdminFournisseursPage />} />
+          <Route path="/admin/appels-offres" element={<AdminAppelsOffresPage />} />
+          <Route path="/admin/contrats" element={<AdminContratsPage />} />
           <Route path="/admin/statistiques" element={<AdminStatistiquesPage />} />
           <Route path="/admin/parametres" element={<AdminParametresPage />} />
           {/* Directions */}
